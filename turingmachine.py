@@ -48,33 +48,9 @@ class MaquinaTuring:
         self.cadeia = ""
 
     # Realiza um passo do processamento de uma cadeia
-    def processa(self):
-        # Se consegue ler um caractere da fita
-        try:
-            caractere = self.cadeia[self.cabeca_leitura]
-        # Caso contrário, lê B (uma fita infinita tanto à esquerda,
-        # quanto à direita)
-        except:
-            self.cadeia[self.cabeca_leitura] = self.simbolo_vazio
-        
-        # Verifica se o símbolo pertence à (Γ U Σ U B)
-        if (
-            str(caractere) not in self.alfabeto and
-            str(caractere) not in self.alfa_fita and
-            str(caractere) != self.simbolo_vazio 
-        ): 
-            print("\n-----ATENCAO-----")
-            print(">Cadeia Invalida!\n\n")
-            sleep(2)
-            self.fim = True
-            return
+    def processa(self, instrucao):
+        instrucao = estado, acao, direcao
 
-        # Estrutura a possível transição
-        transicao = (self.estado_atual, caractere)
-
-        # Caso haja transição, transicione
-        if transicao in self.transicoes:
-            estado, acao, direcao = self.transicoes[transicao]
             self.cadeia[self.cabeca_leitura] = acao
               
             if direcao == ">":
@@ -84,12 +60,6 @@ class MaquinaTuring:
             # Se não, não percorre a cadeia (direcao == "*")
                 
             self.estado_atual = estado
-        # Quando não há transição, vê se aceita (aceitação por
-        # estado final)
-        else:
-            if self.estado_atual in self.ests_finais:
-                self.aceita = True
-            self.fim = True
 
     # Processa uma cadeia inteira
     def processaCadeia(self, cadeia):
@@ -103,11 +73,27 @@ class MaquinaTuring:
         # Processamento
         while not self.fim:
             os.system(CLEAR)
+            # Se consegue ler um caractere da fita
             try:
                 caractere = self.cadeia[self.cabeca_leitura]
+            # Caso contrário, lê B (uma fita infinita tanto à esquerda,
+            # quanto à direita)
             except:
                 self.cadeia[self.cabeca_leitura] = self.simbolo_vazio
+        
+            # Verifica se o símbolo pertence à (Γ U Σ U B)
+            if (
+                str(caractere) not in self.alfabeto and
+                str(caractere) not in self.alfa_fita and
+                str(caractere) != self.simbolo_vazio 
+            ): 
+                print("\n-----ATENCAO-----")
+                print(">Cadeia Invalida!\n\n")
+                sleep(2)
+                self.fim = True
+                return
 
+            # Estrutura a possível transição
             transicao = (self.estado_atual, caractere)
 
             # Impressao
@@ -120,14 +106,36 @@ class MaquinaTuring:
             passo_a_passo += "Cadeia processada => " + self.cadeia_to_string() + "\n"
             passo_a_passo += "Cabeca de Leitura => " + cabeca_pos + "\n"
             passo_a_passo += "Estado Atual      => " + self.estado_atual + "\n"
+
             if transicao in self.transicoes:
                 print('\u03B4' + f"{transicao} = {self.transicoes[transicao]}")
                 passo_a_passo += '\u03B4'+ str(transicao) + " = " + str(self.transicoes[transicao]) + "\n\n"
             else: 
                 print(f"Nao ha funcao de transicao definida para {transicao}!")
                 passo_a_passo += "Nao ha funcao de transicao definida para "+ str(transicao) + "\n\n"
-            self.processa()
-            sleep(2)
+            
+            # Caso haja transição, transicione
+            if transicao in self.transicoes:
+                lista_transicoes = []
+                for instrucao in self.transicoes[transicao]:
+                    estado, acao, direcao = instrucao
+                    lista_transicoes.append((estado, acao, direcao))
+
+                for ramificacao in lista_transicoes:
+                    # e a questão da descrição instantanea?
+                    # da pra passar como argumento da funcao
+                    # funciona na ida, mas não na volta!
+                    self.processa(ramificacao)
+            
+            # Quando não há transição, vê se aceita (aceitação por
+            # estado final)
+            else:
+                if self.estado_atual in self.ests_finais:
+                    self.aceita = True
+                # Quando eu sei que acabou? (sem ser achar aceitacao)
+                # Quando todas as ramificações executaram -> como saber isso?
+                #self.fim = True
+                sleep(1)
 
         conteudo_arqv += "Cadeia processada => " + self.cadeia_to_string()
         self.printa()
