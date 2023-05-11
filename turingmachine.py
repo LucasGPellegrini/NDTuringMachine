@@ -11,6 +11,12 @@ CLEAR = 'clear' if sys.platform.startswith('linux') else 'cls'
 # M = (Q, Γ, B, Σ, δ, q0, F) + Descrição da Máquina
 # para se igualar ao formato presente nos arquivos.
 class MaquinaTuring:
+    # Pilha de MTs para não determinismo
+    # Ao final de um "caminho na arvore de execucao",
+    #   a proxima MT da pilha executa o próximo caminho,
+    #   se a anterior não aceita a cadeia
+    pilha = []
+
     def __init__(self,
                  estados = None,
                  alfa_fita = None,
@@ -48,9 +54,67 @@ class MaquinaTuring:
         self.cadeia = ""
 
     # Realiza um passo do processamento de uma cadeia
-    def processa(self, instrucao):
-        instrucao = estado, acao, direcao
+    def processa(self):
+        # Se consegue ler um caractere da fita
+        try:
+            caractere = self.cadeia[self.cabeca_leitura]
+        # Caso contrário, lê B (uma fita infinita tanto à esquerda,
+        # quanto à direita)
+        except:
+            self.cadeia[self.cabeca_leitura] = self.simbolo_vazio
+        
+        # Verifica se o símbolo pertence à (Γ U Σ U B)
+        if (
+            str(caractere) not in self.alfabeto and
+            str(caractere) not in self.alfa_fita and
+            str(caractere) != self.simbolo_vazio 
+        ): 
+            print("\n-----ATENCAO-----")
+            print(">Cadeia Invalida!\n\n")
+            sleep(2)
+            self.fim = True
+            return
 
+        # Estrutura a possível transição
+        transicao = (self.estado_atual, caractere)
+
+        # Caso haja transição, transicione
+        if transicao in self.transicoes:
+            # Se há mais de uma instrução para a transicao:
+            if len(self.transicoes[transicao]) > 1:
+                # Empilha os caminhos da árvore
+                for instrucao in self.transicoes[transicao][1:]:
+                    estado, acao, direcao = instrucao
+                    # Cria nova MT para a pilha
+                    mt = MaquinaTuring(
+                        self.estados,
+                        self.alfa_fita,
+                        self.simbolo_vazio,
+                        self.alfabeto,
+                        self.transicoes,
+                        self.estado_atual,
+                        self.ests_finais,
+                        self.descricao
+                            )
+                    mt.cadeia = self.cadeia.copy()
+                    mt.cadeia_inicial = self.cadeia_to_string('ini')
+                    mt.cabeca_leitura = self.cabeca_leitura
+
+                    # Aplica a transicao
+                    mt.cadeia[mt.cabeca_leitura] = acao
+                    if direcao == ">":
+                        mt.cabeca_leitura += 1
+                    elif direcao == "<":
+                        mt.cabeca_leitura -= 1
+                    mt.estado_atual = estado
+                   
+                    # as cadeia volta para o formato string para nao conflitar com o método processa
+                    mt.cadeia = self.cadeia_to_string()
+                    # Empilha
+                    self.__push(MaquinaTuring.pilha, mt)
+
+            # Executa o primeiro caminho/instrucao
+            estado, acao, direcao = self.transicoes[transicao][0]
             self.cadeia[self.cabeca_leitura] = acao
               
             if direcao == ">":
@@ -60,6 +124,14 @@ class MaquinaTuring:
             # Se não, não percorre a cadeia (direcao == "*")
                 
             self.estado_atual = estado
+        # Quando não há transição, vê se aceita (aceitação por
+        # estado final)
+        else:
+            if self.estado_atual in self.ests_finais:
+                self.aceita = True
+                # Se aceita, apaga a pilha de caminhos
+                MaquinaTuring.pilha = []
+            self.fim = True
 
     # Processa uma cadeia inteira
     def processaCadeia(self, cadeia):
@@ -73,27 +145,11 @@ class MaquinaTuring:
         # Processamento
         while not self.fim:
             os.system(CLEAR)
-            # Se consegue ler um caractere da fita
             try:
                 caractere = self.cadeia[self.cabeca_leitura]
-            # Caso contrário, lê B (uma fita infinita tanto à esquerda,
-            # quanto à direita)
             except:
                 self.cadeia[self.cabeca_leitura] = self.simbolo_vazio
-        
-            # Verifica se o símbolo pertence à (Γ U Σ U B)
-            if (
-                str(caractere) not in self.alfabeto and
-                str(caractere) not in self.alfa_fita and
-                str(caractere) != self.simbolo_vazio 
-            ): 
-                print("\n-----ATENCAO-----")
-                print(">Cadeia Invalida!\n\n")
-                sleep(2)
-                self.fim = True
-                return
 
-            # Estrutura a possível transição
             transicao = (self.estado_atual, caractere)
 
             # Impressao
@@ -106,51 +162,40 @@ class MaquinaTuring:
             passo_a_passo += "Cadeia processada => " + self.cadeia_to_string() + "\n"
             passo_a_passo += "Cabeca de Leitura => " + cabeca_pos + "\n"
             passo_a_passo += "Estado Atual      => " + self.estado_atual + "\n"
-
             if transicao in self.transicoes:
                 print('\u03B4' + f"{transicao} = {self.transicoes[transicao]}")
                 passo_a_passo += '\u03B4'+ str(transicao) + " = " + str(self.transicoes[transicao]) + "\n\n"
             else: 
                 print(f"Nao ha funcao de transicao definida para {transicao}!")
                 passo_a_passo += "Nao ha funcao de transicao definida para "+ str(transicao) + "\n\n"
-            
-            # Caso haja transição, transicione
-            if transicao in self.transicoes:
-                lista_transicoes = []
-                for instrucao in self.transicoes[transicao]:
-                    estado, acao, direcao = instrucao
-                    lista_transicoes.append((estado, acao, direcao))
-
-                for ramificacao in lista_transicoes:
-                    # e a questão da descrição instantanea?
-                    # da pra passar como argumento da funcao
-                    # funciona na ida, mas não na volta!
-                    self.processa(ramificacao)
-            
-            # Quando não há transição, vê se aceita (aceitação por
-            # estado final)
-            else:
-                if self.estado_atual in self.ests_finais:
-                    self.aceita = True
-                # Quando eu sei que acabou? (sem ser achar aceitacao)
-                # Quando todas as ramificações executaram -> como saber isso?
-                #self.fim = True
-                sleep(1)
+            self.processa()
+            sleep(2)
 
         conteudo_arqv += "Cadeia processada => " + self.cadeia_to_string()
         self.printa()
         print("*****************")
         if self.aceita:
             print("  Cadeia Aceita !")
+            print("*****************")
+            sleep(3)
+            conteudo_arqv += "\n\n"
             conteudo_arqv += "CADEIA ACEITA!"
         else:
             print("Cadeia Rejeitada!")
+            print("*****************")
+            sleep(3)
+            conteudo_arqv += "\n\n"
             conteudo_arqv += "CADEIA REJEITADA!"
-        print("*****************")
-        sleep(3)
-        conteudo_arqv += "\n\n"
 
-        self.__salva_no_arqv(conteudo_arqv, passo_a_passo)
+            # Se há algum caminho do não-determinismo, execute-o
+            if len(MaquinaTuring.pilha) >= 1:
+                mt = MaquinaTuring.pilha.pop()
+                mt.processaCadeia(mt.cadeia)
+
+
+        # Parte de salvar no arquivo comentada por enqanto
+        #self.__salva_no_arqv(conteudo_arqv, passo_a_passo)
+
 
     def printa(self):
         print(f"{'=-'*(len(self.descricao)//2)}")
@@ -172,18 +217,17 @@ class MaquinaTuring:
             return string
     
     def verifica_maquina(self):
-        for estado, transicao in self.transicoes.items():
+        for estado, lista_transicao in self.transicoes.items():
             est_atual, simbolo = estado
-            est_proxm, si_novo, direcao = transicao
+            for (est_proxm, si_novo, direcao) in lista_transicao:
+                if (
+                    str(est_atual) not in self.estados or
+                    str(est_proxm) not in self.estados or
 
-            if (
-                str(est_atual) not in self.estados or
-                str(est_proxm) not in self.estados or
-
-                str(simbolo) not in self.alfa_fita or
-                str(si_novo) not in self.alfa_fita
-            ):
-                return False
+                    str(simbolo) not in self.alfa_fita or
+                    str(si_novo) not in self.alfa_fita
+                ):
+                    return False
 
         return True
 
@@ -215,3 +259,6 @@ class MaquinaTuring:
         with open(path, 'w', encoding='utf-8') as arqv:
             arqv.write(string)
 
+    
+    def __push(self, pilha, x):
+        pilha.insert(0, x)
