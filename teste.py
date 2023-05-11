@@ -22,7 +22,7 @@ def main():
             dicio_mt.update({nome:maquina})
 
     # Testa
-    dicio_mt['ex2'].processaCadeia("001001")
+    dicio_mt['ex2'].processaCadeia("0101")
 
 if __name__ == "__main__":
     main()

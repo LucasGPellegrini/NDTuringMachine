@@ -62,6 +62,7 @@ class MaquinaTuring:
         # quanto à direita)
         except:
             self.cadeia[self.cabeca_leitura] = self.simbolo_vazio
+            caractere = self.simbolo_vazio
         
         # Verifica se o símbolo pertence à (Γ U Σ U B)
         if (
@@ -108,8 +109,6 @@ class MaquinaTuring:
                         mt.cabeca_leitura -= 1
                     mt.estado_atual = estado
                    
-                    # as cadeia volta para o formato string para nao conflitar com o método processa
-                    mt.cadeia = self.cadeia_to_string()
                     # Empilha
                     self.__push(MaquinaTuring.pilha, mt)
 
@@ -149,6 +148,7 @@ class MaquinaTuring:
                 caractere = self.cadeia[self.cabeca_leitura]
             except:
                 self.cadeia[self.cabeca_leitura] = self.simbolo_vazio
+                caractere = self.simbolo_vazio
 
             transicao = (self.estado_atual, caractere)
 
@@ -169,7 +169,7 @@ class MaquinaTuring:
                 print(f"Nao ha funcao de transicao definida para {transicao}!")
                 passo_a_passo += "Nao ha funcao de transicao definida para "+ str(transicao) + "\n\n"
             self.processa()
-            sleep(2)
+            sleep(0.8)
 
         conteudo_arqv += "Cadeia processada => " + self.cadeia_to_string()
         self.printa()
@@ -177,20 +177,20 @@ class MaquinaTuring:
         if self.aceita:
             print("  Cadeia Aceita !")
             print("*****************")
-            sleep(3)
+            sleep(2)
             conteudo_arqv += "\n\n"
             conteudo_arqv += "CADEIA ACEITA!"
         else:
             print("Cadeia Rejeitada!")
             print("*****************")
-            sleep(3)
+            sleep(2)
             conteudo_arqv += "\n\n"
             conteudo_arqv += "CADEIA REJEITADA!"
 
             # Se há algum caminho do não-determinismo, execute-o
             if len(MaquinaTuring.pilha) >= 1:
                 mt = MaquinaTuring.pilha.pop()
-                mt.processaCadeia(mt.cadeia)
+                mt.processaCadeia(mt.cadeia_to_string())
 
 
         # Parte de salvar no arquivo comentada por enqanto
