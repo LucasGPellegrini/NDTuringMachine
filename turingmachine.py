@@ -11,11 +11,6 @@ CLEAR = 'clear' if sys.platform.startswith('linux') else 'cls'
 # M = (Q, Γ, B, Σ, δ, q0, F) + Descrição da Máquina
 # para se igualar ao formato presente nos arquivos.
 class MaquinaTuring:
-    # Pilha de MTs para não determinismo
-    # Ao final de um "caminho na arvore de execucao",
-    #   a proxima MT da pilha executa o próximo caminho,
-    #   se a anterior não aceita a cadeia
-    pilha = []
 
     def __init__(self,
                  estados = None,
@@ -52,6 +47,9 @@ class MaquinaTuring:
         self.fim = False
         self.cadeia_inicial = ""
         self.cadeia = ""
+
+        # Elemento do Não-Determinismo (pilha de DescricaoInstantanea)
+        self.pilha = []
 
     # Realiza um passo do processamento de uma cadeia
     def processa(self):
