@@ -1,6 +1,8 @@
 import os
 import sys
+import copy
 from time import sleep
+from DescricaoInstantanea import DescricaoInstantanea
 
 # Constante para limpar terminal (Linux ou Windows)
 CLEAR = 'clear' if sys.platform.startswith('linux') else 'cls'
@@ -48,6 +50,9 @@ class MaquinaTuring:
         self.cadeia_inicial = ""
         self.cadeia = ""
 
+        # Variavel para auxilio da persistencia das execuções
+        self.passo_a_passo = ""
+
         # Elemento do Não-Determinismo (pilha de DescricaoInstantanea)
         self.pilha = []
 
@@ -83,32 +88,12 @@ class MaquinaTuring:
             if len(self.transicoes[transicao]) > 1:
                 # Empilha os caminhos da árvore
                 for instrucao in self.transicoes[transicao][1:]:
-                    estado, acao, direcao = instrucao
-                    # Cria nova MT para a pilha
-                    mt = MaquinaTuring(
-                        self.estados,
-                        self.alfa_fita,
-                        self.simbolo_vazio,
-                        self.alfabeto,
-                        self.transicoes,
-                        self.estado_atual,
-                        self.ests_finais,
-                        self.descricao
-                            )
-                    mt.cadeia = self.cadeia.copy()
-                    mt.cadeia_inicial = self.cadeia_to_string('ini')
-                    mt.cabeca_leitura = self.cabeca_leitura
-
-                    # Aplica a transicao
-                    mt.cadeia[mt.cabeca_leitura] = acao
-                    if direcao == ">":
-                        mt.cabeca_leitura += 1
-                    elif direcao == "<":
-                        mt.cabeca_leitura -= 1
-                    mt.estado_atual = estado
-                   
+                    # Guarda a Descricao instantanea
+                    instante = DescricaoInstantanea(
+                            self.cabeca_leitura, self.cadeia, 
+                            self.estado_atual, instrucao, self.passo_a_passo)
                     # Empilha
-                    self.__push(MaquinaTuring.pilha, mt)
+                    self.__push(self.pilha, instante)
 
             # Executa o primeiro caminho/instrucao
             estado, acao, direcao = self.transicoes[transicao][0]
@@ -127,17 +112,21 @@ class MaquinaTuring:
             if self.estado_atual in self.ests_finais:
                 self.aceita = True
                 # Se aceita, apaga a pilha de caminhos
-                MaquinaTuring.pilha = []
+                self.pilha = []
             self.fim = True
 
     # Processa uma cadeia inteira
-    def processaCadeia(self, cadeia):
-        self.cadeia_inicial = dict(enumerate(cadeia))
+    def processaCadeia(self, cadeia, nd = False):
+        # Se é o processamento de um novo ramo do nao determinismo, precisa resetar a variavel fim
+        if nd:
+            self.fim = False
+        else: 
+            self.cadeia_inicial = dict(enumerate(cadeia))
+            self.passo_a_passo = ""
         self.cadeia = dict(enumerate(cadeia))
 
         # Prepara os dados que serao escritos no arquivo
         conteudo_arqv = self.__setuplaToString()
-        passo_a_passo = ""
         
         # Processamento
         while not self.fim:
@@ -157,43 +146,43 @@ class MaquinaTuring:
             print(f"Cabeca de Leitura => {cabeca_pos}")
             print(f"Estado Atual      => {self.estado_atual}")
             print(f"Transicao         => ")
-            passo_a_passo += "Cadeia processada => " + self.cadeia_to_string() + "\n"
-            passo_a_passo += "Cabeca de Leitura => " + cabeca_pos + "\n"
-            passo_a_passo += "Estado Atual      => " + self.estado_atual + "\n"
+            self.passo_a_passo += "Cadeia processada => " + self.cadeia_to_string() + "\n"
+            self.passo_a_passo += "Cabeca de Leitura => " + cabeca_pos + "\n"
+            self.passo_a_passo += "Estado Atual      => " + self.estado_atual + "\n"
             if transicao in self.transicoes:
                 print('\u03B4' + f"{transicao} = {self.transicoes[transicao]}")
-                passo_a_passo += '\u03B4'+ str(transicao) + " = " + str(self.transicoes[transicao]) + "\n\n"
+                self.passo_a_passo += '\u03B4'+ str(transicao) + " = " + str(self.transicoes[transicao]) + "\n\n"
             else: 
                 print(f"Nao ha funcao de transicao definida para {transicao}!")
-                passo_a_passo += "Nao ha funcao de transicao definida para "+ str(transicao) + "\n\n"
+                self.passo_a_passo += "Nao ha funcao de transicao definida para "+ str(transicao) + "\n\n"
             self.processa()
             sleep(0.8)
 
-        conteudo_arqv += "Cadeia processada => " + self.cadeia_to_string()
-        self.printa()
         print("*****************")
         if self.aceita:
+            conteudo_arqv += "Cadeia processada => " + self.cadeia_to_string()
             print("  Cadeia Aceita !")
             print("*****************")
-            sleep(2)
             conteudo_arqv += "\n\n"
-            conteudo_arqv += "CADEIA ACEITA!"
+            conteudo_arqv += "CADEIA ACEITA!\n"
+            sleep(1.2)
+            self.__salva_no_arqv(conteudo_arqv, self.passo_a_passo)
         else:
-            print("Cadeia Rejeitada!")
+            print("Ramo do nao-determinismo Rejeitado!")
             print("*****************")
-            sleep(2)
-            conteudo_arqv += "\n\n"
-            conteudo_arqv += "CADEIA REJEITADA!"
+            sleep(1.2)
+            # Se não ha mais ramos do não-determinismo
+            # Então pode armazenar no arquivo que a cadeia foi rejeitada!
+            if len(self.pilha) == 0:
+                conteudo_arqv += "Cadeia processada => " + self.cadeia_to_string()
+                conteudo_arqv += "\n\n"
+                conteudo_arqv += "CADEIA REJEITADA!\n"
+                self.__salva_no_arqv(conteudo_arqv, self.passo_a_passo)
 
             # Se há algum caminho do não-determinismo, execute-o
-            if len(MaquinaTuring.pilha) >= 1:
-                mt = MaquinaTuring.pilha.pop()
-                mt.processaCadeia(mt.cadeia_to_string())
-
-
-        # Parte de salvar no arquivo comentada por enqanto
-        #self.__salva_no_arqv(conteudo_arqv, passo_a_passo)
-
+            if len(self.pilha) >= 1:
+                di = self.pilha.pop()
+                self.__recuperaInstancia(di)
 
     def printa(self):
         print(f"{'=-'*(len(self.descricao)//2)}")
@@ -250,7 +239,7 @@ class MaquinaTuring:
         string += passos
 
         nome = ''
-        for char in list(self.cadeia_inicial.values())[:-1]:
+        for char in list(self.cadeia_inicial.values()):
             nome += char
         diretorio = "execucoes"
         path = os.path.join(diretorio, nome)
@@ -260,3 +249,11 @@ class MaquinaTuring:
     
     def __push(self, pilha, x):
         pilha.insert(0, x)
+
+    def __recuperaInstancia(self, descricaoInstantanea):
+        self.cadeia = copy.deepcopy(descricaoInstantanea.cadeia)
+        self.cabeca_leitura = copy.deepcopy(descricaoInstantanea.cabeca_leitura)
+        self.estado_atual = copy.deepcopy(descricaoInstantanea.estado)
+        self.passo_a_passo = copy.deepcopy(descricaoInstantanea.passo)
+
+        self.processaCadeia(self.cadeia_to_string(), True)
