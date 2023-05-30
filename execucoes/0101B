@@ -6,58 +6,66 @@ Estado inicial: q1
 Estados Finais: {'qf'}
 Transicoes (δ): {('q0', '0'): [('q0', '1', '>'), ('q1', '1', '>')], ('q2', '1'): [('q0', '1', '>')], ('q1', '1'): [('q2', '0', '<')], ('q1', 'B'): [('qf', 'B', '>')]}
 -----------------------------------------------
-Cadeia inicial    => 0101
+Cadeia inicial    => 0101B
 Cadeia processada => 1111BB
 
 CADEIA ACEITA!
 ------------PASSO-A-PASSO------------
-Cadeia processada => 0101
+Cadeia processada => 0101B
 Cabeca de Leitura => ^
 Estado Atual      => q0
 δ('q0', '0') = [('q0', '1', '>'), ('q1', '1', '>')]
+Transicao Tomada: δ : (q1, 1, >)
 
-Cadeia processada => 1101
+Cadeia processada => 1101B
 Cabeca de Leitura =>  ^
 Estado Atual      => q1
 δ('q1', '1') = [('q2', '0', '<')]
+Transicao Tomada: δ : (q2, 0, <)
 
-Cadeia processada => 1001
+Cadeia processada => 1001B
 Cabeca de Leitura => ^
 Estado Atual      => q2
 δ('q2', '1') = [('q0', '1', '>')]
+Transicao Tomada: δ : (q0, 1, >)
 
-Cadeia processada => 1001
+Cadeia processada => 1001B
 Cabeca de Leitura =>  ^
 Estado Atual      => q0
 δ('q0', '0') = [('q0', '1', '>'), ('q1', '1', '>')]
+Transicao Tomada: δ : (q0, 1, >)
 
-Cadeia processada => 1101
+Cadeia processada => 1101B
 Cabeca de Leitura =>   ^
 Estado Atual      => q0
 δ('q0', '0') = [('q0', '1', '>'), ('q1', '1', '>')]
+Transicao Tomada: δ : (q1, 1, >)
 
-Cadeia processada => 1111
+Cadeia processada => 1111B
 Cabeca de Leitura =>    ^
 Estado Atual      => q1
 δ('q1', '1') = [('q2', '0', '<')]
+Transicao Tomada: δ : (q2, 0, <)
 
-Cadeia processada => 1110
+Cadeia processada => 1110B
 Cabeca de Leitura =>   ^
 Estado Atual      => q2
 δ('q2', '1') = [('q0', '1', '>')]
+Transicao Tomada: δ : (q0, 1, >)
 
-Cadeia processada => 1110
+Cadeia processada => 1110B
 Cabeca de Leitura =>    ^
 Estado Atual      => q0
 δ('q0', '0') = [('q0', '1', '>'), ('q1', '1', '>')]
+Transicao Tomada: δ : (q1, 1, >)
 
 Cadeia processada => 1111B
 Cabeca de Leitura =>     ^
 Estado Atual      => q1
 δ('q1', 'B') = [('qf', 'B', '>')]
+Transicao Tomada: δ : (qf, B, >)
 
 Cadeia processada => 1111BB
 Cabeca de Leitura =>      ^
 Estado Atual      => qf
 Nao ha funcao de transicao definida para ('qf', 'B')
-

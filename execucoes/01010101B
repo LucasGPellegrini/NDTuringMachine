@@ -1,0 +1,119 @@
+Estados: ['q0', 'q1', 'q2', 'qf']
+Alfabeto da Fita: ['0', '1', 'B']
+Simbolo Vazio: 'B'
+Alfabeto (Σ): ['0', '1']
+Estado inicial: q1
+Estados Finais: {'qf'}
+Transicoes (δ): {('q0', '0'): [('q0', '1', '>'), ('q1', '1', '>')], ('q2', '1'): [('q0', '1', '>')], ('q1', '1'): [('q2', '0', '<')], ('q1', 'B'): [('qf', 'B', '>')]}
+-----------------------------------------------
+Cadeia inicial    => 01010101B
+Cadeia processada => 11111111BB
+
+CADEIA ACEITA!
+------------PASSO-A-PASSO------------
+Cadeia processada => 01010101B
+Cabeca de Leitura => ^
+Estado Atual      => q0
+δ('q0', '0') = [('q0', '1', '>'), ('q1', '1', '>')]
+Transicao Tomada: δ : (q1, 1, >)
+
+Cadeia processada => 11010101B
+Cabeca de Leitura =>  ^
+Estado Atual      => q1
+δ('q1', '1') = [('q2', '0', '<')]
+Transicao Tomada: δ : (q2, 0, <)
+
+Cadeia processada => 10010101B
+Cabeca de Leitura => ^
+Estado Atual      => q2
+δ('q2', '1') = [('q0', '1', '>')]
+Transicao Tomada: δ : (q0, 1, >)
+
+Cadeia processada => 10010101B
+Cabeca de Leitura =>  ^
+Estado Atual      => q0
+δ('q0', '0') = [('q0', '1', '>'), ('q1', '1', '>')]
+Transicao Tomada: δ : (q0, 1, >)
+
+Cadeia processada => 11010101B
+Cabeca de Leitura =>   ^
+Estado Atual      => q0
+δ('q0', '0') = [('q0', '1', '>'), ('q1', '1', '>')]
+Transicao Tomada: δ : (q1, 1, >)
+
+Cadeia processada => 11110101B
+Cabeca de Leitura =>    ^
+Estado Atual      => q1
+δ('q1', '1') = [('q2', '0', '<')]
+Transicao Tomada: δ : (q2, 0, <)
+
+Cadeia processada => 11100101B
+Cabeca de Leitura =>   ^
+Estado Atual      => q2
+δ('q2', '1') = [('q0', '1', '>')]
+Transicao Tomada: δ : (q0, 1, >)
+
+Cadeia processada => 11100101B
+Cabeca de Leitura =>    ^
+Estado Atual      => q0
+δ('q0', '0') = [('q0', '1', '>'), ('q1', '1', '>')]
+Transicao Tomada: δ : (q0, 1, >)
+
+Cadeia processada => 11110101B
+Cabeca de Leitura =>     ^
+Estado Atual      => q0
+δ('q0', '0') = [('q0', '1', '>'), ('q1', '1', '>')]
+Transicao Tomada: δ : (q1, 1, >)
+
+Cadeia processada => 11111101B
+Cabeca de Leitura =>      ^
+Estado Atual      => q1
+δ('q1', '1') = [('q2', '0', '<')]
+Transicao Tomada: δ : (q2, 0, <)
+
+Cadeia processada => 11111001B
+Cabeca de Leitura =>     ^
+Estado Atual      => q2
+δ('q2', '1') = [('q0', '1', '>')]
+Transicao Tomada: δ : (q0, 1, >)
+
+Cadeia processada => 11111001B
+Cabeca de Leitura =>      ^
+Estado Atual      => q0
+δ('q0', '0') = [('q0', '1', '>'), ('q1', '1', '>')]
+Transicao Tomada: δ : (q0, 1, >)
+
+Cadeia processada => 11111101B
+Cabeca de Leitura =>       ^
+Estado Atual      => q0
+δ('q0', '0') = [('q0', '1', '>'), ('q1', '1', '>')]
+Transicao Tomada: δ : (q1, 1, >)
+
+Cadeia processada => 11111111B
+Cabeca de Leitura =>        ^
+Estado Atual      => q1
+δ('q1', '1') = [('q2', '0', '<')]
+Transicao Tomada: δ : (q2, 0, <)
+
+Cadeia processada => 11111110B
+Cabeca de Leitura =>       ^
+Estado Atual      => q2
+δ('q2', '1') = [('q0', '1', '>')]
+Transicao Tomada: δ : (q0, 1, >)
+
+Cadeia processada => 11111110B
+Cabeca de Leitura =>        ^
+Estado Atual      => q0
+δ('q0', '0') = [('q0', '1', '>'), ('q1', '1', '>')]
+Transicao Tomada: δ : (q1, 1, >)
+
+Cadeia processada => 11111111B
+Cabeca de Leitura =>         ^
+Estado Atual      => q1
+δ('q1', 'B') = [('qf', 'B', '>')]
+Transicao Tomada: δ : (qf, B, >)
+
+Cadeia processada => 11111111BB
+Cabeca de Leitura =>          ^
+Estado Atual      => qf
+Nao ha funcao de transicao definida para ('qf', 'B')

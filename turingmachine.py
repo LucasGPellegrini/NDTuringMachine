@@ -52,6 +52,7 @@ class MaquinaTuring:
 
         # Variavel para auxilio da persistencia das execuções
         self.passo_a_passo = ""
+        self.brancos = 0
 
         # Elemento do Não-Determinismo (pilha de DescricaoInstantanea)
         self.pilha = []
@@ -98,6 +99,10 @@ class MaquinaTuring:
             # Executa o primeiro caminho/instrucao
             estado, acao, direcao = self.transicoes[transicao][0]
             self.cadeia[self.cabeca_leitura] = acao
+
+            # Marca qual transição foi tomada
+            self.passo_a_passo += "Transicao Tomada: "
+            self.passo_a_passo += '\u03B4' + " : " + f'({estado}, {acao}, {direcao})' + "\n"
               
             if direcao == ">":
                 self.cabeca_leitura += 1
@@ -123,6 +128,7 @@ class MaquinaTuring:
         else: 
             self.cadeia_inicial = dict(enumerate(cadeia))
             self.passo_a_passo = ""
+            self.brancos = 0
         self.cadeia = dict(enumerate(cadeia))
 
         # Prepara os dados que serao escritos no arquivo
@@ -140,21 +146,21 @@ class MaquinaTuring:
             transicao = (self.estado_atual, caractere)
 
             # Impressao
-            cabeca_pos = " " * self.cabeca_leitura
-            cabeca_pos += "^"
             self.printa()
-            print(f"Cabeca de Leitura => {cabeca_pos}")
+            cabeca_pos = " " * (self.cabeca_leitura + self.brancos)
+            cabeca_pos += "^"
+            print(f"Cabeca de Leitura => {cabeca_pos[2:]}")
             print(f"Estado Atual      => {self.estado_atual}")
             print(f"Transicao         => ")
-            self.passo_a_passo += "Cadeia processada => " + self.cadeia_to_string() + "\n"
-            self.passo_a_passo += "Cabeca de Leitura => " + cabeca_pos + "\n"
+            self.passo_a_passo += "\nCadeia processada => " + self.cadeia_to_string() + "\n"
+            self.passo_a_passo += "Cabeca de Leitura => " + cabeca_pos[self.brancos:] + "\n"
             self.passo_a_passo += "Estado Atual      => " + self.estado_atual + "\n"
             if transicao in self.transicoes:
                 print('\u03B4' + f"{transicao} = {self.transicoes[transicao]}")
-                self.passo_a_passo += '\u03B4'+ str(transicao) + " = " + str(self.transicoes[transicao]) + "\n\n"
+                self.passo_a_passo += '\u03B4'+ str(transicao) + " = " + str(self.transicoes[transicao]) + "\n"
             else: 
                 print(f"Nao ha funcao de transicao definida para {transicao}!")
-                self.passo_a_passo += "Nao ha funcao de transicao definida para "+ str(transicao) + "\n\n"
+                self.passo_a_passo += "Nao ha funcao de transicao definida para "+ str(transicao) + "\n"
             self.processa()
             sleep(0.8)
 
@@ -185,11 +191,21 @@ class MaquinaTuring:
                 self.__recuperaInstancia(di)
 
     def printa(self):
+        # Conta a quantidade de símbolos brancos que há efetivamente na cadeia
+        # (pra ficar bonitinho na hora de printar)
+        vazios_cadeia = 0
+        for s in reversed(self.cadeia_to_string()):
+            if s == self.simbolo_vazio:
+                vazios_cadeia += 1
+            else:
+                break
         print(f"{'=-'*(len(self.descricao)//2)}")
         print(self.descricao)
         print(f"{'=-'*(len(self.descricao)//2)}\n")
-        print(f"Cadeia inicial    => {self.cadeia_to_string('ini')}")
-        print(f"Cadeia processada => {self.cadeia_to_string()}")
+        if len(self.cadeia_to_string()) < 20:
+            self.brancos = (20-len(self.cadeia_to_string()))//2
+        print(f"Cadeia inicial  => {self.brancos*self.simbolo_vazio}{self.cadeia_to_string('ini')}{(self.brancos-vazios_cadeia)*self.simbolo_vazio}")
+        print(f"Fita processada => {self.brancos*self.simbolo_vazio}{self.cadeia_to_string()}{(self.brancos-vazios_cadeia)*self.simbolo_vazio}")
 
     def cadeia_to_string(self, cadeia=""):
         if cadeia == "ini":
@@ -235,7 +251,7 @@ class MaquinaTuring:
     def __salva_no_arqv(self, cabecalho, passos):
         string = ""
         string += cabecalho
-        string += "------------PASSO-A-PASSO------------\n"
+        string += "------------PASSO-A-PASSO------------"
         string += passos
 
         nome = ''
@@ -255,5 +271,10 @@ class MaquinaTuring:
         self.cabeca_leitura = copy.deepcopy(descricaoInstantanea.cabeca_leitura)
         self.estado_atual = copy.deepcopy(descricaoInstantanea.estado)
         self.passo_a_passo = copy.deepcopy(descricaoInstantanea.passo)
+
+        # Marca qual transição foi tomada
+        estado, acao, direcao = descricaoInstantanea.instrucao
+        self.passo_a_passo += "Transicao Tomada: "
+        self.passo_a_passo += '\u03B4' + " : " + f'({estado}, {acao}, {direcao})' + "\n"
 
         self.processaCadeia(self.cadeia_to_string(), True)

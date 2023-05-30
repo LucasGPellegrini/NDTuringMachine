@@ -7,6 +7,7 @@ class DescricaoInstantanea:
         self.cadeia = copy.deepcopy(cadeia)
         self.estado = copy.deepcopy(estado)
         self.passo = copy.deepcopy(passo)
+        self.instrucao = copy.deepcopy(instrucao)
 
         estado_prox, acao, direcao = instrucao
         # Aplica a transicao
