@@ -1,0 +1,137 @@
+Estados: ['q1', 'q2', 'q3', 'q4', 'q5', 'q6']
+Alfabeto da Fita: ['a', 'b', 'c', 'B']
+Simbolo Vazio: 'B'
+Alfabeto (Σ): ['a', 'b', 'c']
+Estado inicial: q1
+Estados Finais: {'q6'}
+Transicoes (δ): {('q1', 'a'): [('q2', 'b', '>'), ('q3', 'c', '>')], ('q1', 'b'): [('q1', 'b', '>')], ('q1', 'c'): [('q1', 'c', '>')], ('q2', 'b'): [('q2', 'b', '>')], ('q2', 'B'): [('q4', 'B', '<')], ('q3', 'c'): [('q3', 'b', '>')], ('q3', 'B'): [('q5', 'B', '<')], ('q4', 'b'): [('q4', 'b', '<')], ('q5', 'c'): [('q5', 'c', '<')], ('q4', 'B'): [('q6', 'B', '>')], ('q5', 'B'): [('q6', 'B', '>')]}
+-----------------------------------------------
+Cadeia inicial    => bbbbabbbbB
+Cadeia processada => bbbbbbbbbBB
+
+CADEIA ACEITA!
+------------PASSO-A-PASSO------------
+Cadeia processada => bbbbabbbbB
+Cabeca de Leitura => ^
+Estado Atual      => q1
+δ('q1', 'b') = [('q1', 'b', '>')]
+Transicao Tomada: δ : (q1, b, >)
+
+Cadeia processada => bbbbabbbbB
+Cabeca de Leitura =>  ^
+Estado Atual      => q1
+δ('q1', 'b') = [('q1', 'b', '>')]
+Transicao Tomada: δ : (q1, b, >)
+
+Cadeia processada => bbbbabbbbB
+Cabeca de Leitura =>   ^
+Estado Atual      => q1
+δ('q1', 'b') = [('q1', 'b', '>')]
+Transicao Tomada: δ : (q1, b, >)
+
+Cadeia processada => bbbbabbbbB
+Cabeca de Leitura =>    ^
+Estado Atual      => q1
+δ('q1', 'b') = [('q1', 'b', '>')]
+Transicao Tomada: δ : (q1, b, >)
+
+Cadeia processada => bbbbabbbbB
+Cabeca de Leitura =>     ^
+Estado Atual      => q1
+δ('q1', 'a') = [('q2', 'b', '>'), ('q3', 'c', '>')]
+Transicao Tomada: δ : (q2, b, >)
+
+Cadeia processada => bbbbbbbbbB
+Cabeca de Leitura =>      ^
+Estado Atual      => q2
+δ('q2', 'b') = [('q2', 'b', '>')]
+Transicao Tomada: δ : (q2, b, >)
+
+Cadeia processada => bbbbbbbbbB
+Cabeca de Leitura =>       ^
+Estado Atual      => q2
+δ('q2', 'b') = [('q2', 'b', '>')]
+Transicao Tomada: δ : (q2, b, >)
+
+Cadeia processada => bbbbbbbbbB
+Cabeca de Leitura =>        ^
+Estado Atual      => q2
+δ('q2', 'b') = [('q2', 'b', '>')]
+Transicao Tomada: δ : (q2, b, >)
+
+Cadeia processada => bbbbbbbbbB
+Cabeca de Leitura =>         ^
+Estado Atual      => q2
+δ('q2', 'b') = [('q2', 'b', '>')]
+Transicao Tomada: δ : (q2, b, >)
+
+Cadeia processada => bbbbbbbbbB
+Cabeca de Leitura =>          ^
+Estado Atual      => q2
+δ('q2', 'B') = [('q4', 'B', '<')]
+Transicao Tomada: δ : (q4, B, <)
+
+Cadeia processada => bbbbbbbbbB
+Cabeca de Leitura =>         ^
+Estado Atual      => q4
+δ('q4', 'b') = [('q4', 'b', '<')]
+Transicao Tomada: δ : (q4, b, <)
+
+Cadeia processada => bbbbbbbbbB
+Cabeca de Leitura =>        ^
+Estado Atual      => q4
+δ('q4', 'b') = [('q4', 'b', '<')]
+Transicao Tomada: δ : (q4, b, <)
+
+Cadeia processada => bbbbbbbbbB
+Cabeca de Leitura =>       ^
+Estado Atual      => q4
+δ('q4', 'b') = [('q4', 'b', '<')]
+Transicao Tomada: δ : (q4, b, <)
+
+Cadeia processada => bbbbbbbbbB
+Cabeca de Leitura =>      ^
+Estado Atual      => q4
+δ('q4', 'b') = [('q4', 'b', '<')]
+Transicao Tomada: δ : (q4, b, <)
+
+Cadeia processada => bbbbbbbbbB
+Cabeca de Leitura =>     ^
+Estado Atual      => q4
+δ('q4', 'b') = [('q4', 'b', '<')]
+Transicao Tomada: δ : (q4, b, <)
+
+Cadeia processada => bbbbbbbbbB
+Cabeca de Leitura =>    ^
+Estado Atual      => q4
+δ('q4', 'b') = [('q4', 'b', '<')]
+Transicao Tomada: δ : (q4, b, <)
+
+Cadeia processada => bbbbbbbbbB
+Cabeca de Leitura =>   ^
+Estado Atual      => q4
+δ('q4', 'b') = [('q4', 'b', '<')]
+Transicao Tomada: δ : (q4, b, <)
+
+Cadeia processada => bbbbbbbbbB
+Cabeca de Leitura =>  ^
+Estado Atual      => q4
+δ('q4', 'b') = [('q4', 'b', '<')]
+Transicao Tomada: δ : (q4, b, <)
+
+Cadeia processada => bbbbbbbbbB
+Cabeca de Leitura => ^
+Estado Atual      => q4
+δ('q4', 'b') = [('q4', 'b', '<')]
+Transicao Tomada: δ : (q4, b, <)
+
+Cadeia processada => bbbbbbbbbBB
+Cabeca de Leitura => 
+Estado Atual      => q4
+δ('q4', 'B') = [('q6', 'B', '>')]
+Transicao Tomada: δ : (q6, B, >)
+
+Cadeia processada => bbbbbbbbbBB
+Cabeca de Leitura => ^
+Estado Atual      => q6
+Nao ha funcao de transicao definida para ('q6', 'b')

@@ -1,0 +1,227 @@
+Estados: ['qini', 'q0->', 'q0<-', 'q1->', 'q1<-', 'qfim']
+Alfabeto da Fita: ['0', '1', 'Z', 'U', 'B']
+Simbolo Vazio: 'B'
+Alfabeto (Σ): ['0', '1']
+Estado inicial: q0<-
+Estados Finais: {'qfim'}
+Transicoes (δ): {('qini', '0'): [('q0->', 'Z', '>')], ('qini', '1'): [('q1->', 'U', '>')], ('qini', 'Z'): [('qini', 'Z', '>')], ('qini', 'U'): [('qini', 'U', '>')], ('qini', 'B'): [('qfim', 'B', '>')], ('q0->', '0'): [('q0->', '0', '>'), ('q0<-', 'Z', '<')], ('q0->', '1'): [('q0->', '1', '>')], ('q0->', 'Z'): [('q0->', 'Z', '>')], ('q0->', 'U'): [('q0->', 'U', '>')], ('q1->', '1'): [('q1->', '1', '>'), ('q1<-', 'U', '<')], ('q1->', '0'): [('q1->', '0', '>')], ('q1->', 'Z'): [('q1->', 'Z', '>')], ('q1->', 'U'): [('q1->', 'U', '>')], ('q0<-', '0'): [('q0<-', '0', '<')], ('q0<-', '1'): [('q0<-', '1', '<')], ('q0<-', 'Z'): [('q0<-', 'Z', '<')], ('q0<-', 'U'): [('q0<-', 'U', '<')], ('q0<-', 'B'): [('qini', 'B', '>')], ('q1<-', '0'): [('q1<-', '0', '<')], ('q1<-', '1'): [('q1<-', '1', '<')], ('q1<-', 'Z'): [('q1<-', 'Z', '<')], ('q1<-', 'U'): [('q1<-', 'U', '<')], ('q1<-', 'B'): [('qini', 'B', '>')]}
+-----------------------------------------------
+Cadeia inicial    => 010010B
+Cadeia processada => ZUZZUZBBBB
+
+CADEIA ACEITA!
+------------PASSO-A-PASSO------------
+Cadeia processada => 010010B
+Cabeca de Leitura => ^
+Estado Atual      => qini
+δ('qini', '0') = [('q0->', 'Z', '>')]
+Transicao Tomada: δ : (q0->, Z, >)
+
+Cadeia processada => Z10010B
+Cabeca de Leitura =>  ^
+Estado Atual      => q0->
+δ('q0->', '1') = [('q0->', '1', '>')]
+Transicao Tomada: δ : (q0->, 1, >)
+
+Cadeia processada => Z10010B
+Cabeca de Leitura =>   ^
+Estado Atual      => q0->
+δ('q0->', '0') = [('q0->', '0', '>'), ('q0<-', 'Z', '<')]
+Transicao Tomada: δ : (q0<-, Z, <)
+
+Cadeia processada => Z1Z010B
+Cabeca de Leitura =>  ^
+Estado Atual      => q0<-
+δ('q0<-', '1') = [('q0<-', '1', '<')]
+Transicao Tomada: δ : (q0<-, 1, <)
+
+Cadeia processada => Z1Z010B
+Cabeca de Leitura => ^
+Estado Atual      => q0<-
+δ('q0<-', 'Z') = [('q0<-', 'Z', '<')]
+Transicao Tomada: δ : (q0<-, Z, <)
+
+Cadeia processada => Z1Z010BB
+Cabeca de Leitura => 
+Estado Atual      => q0<-
+δ('q0<-', 'B') = [('qini', 'B', '>')]
+Transicao Tomada: δ : (qini, B, >)
+
+Cadeia processada => Z1Z010BB
+Cabeca de Leitura => ^
+Estado Atual      => qini
+δ('qini', 'Z') = [('qini', 'Z', '>')]
+Transicao Tomada: δ : (qini, Z, >)
+
+Cadeia processada => Z1Z010BB
+Cabeca de Leitura =>  ^
+Estado Atual      => qini
+δ('qini', '1') = [('q1->', 'U', '>')]
+Transicao Tomada: δ : (q1->, U, >)
+
+Cadeia processada => ZUZ010BB
+Cabeca de Leitura =>   ^
+Estado Atual      => q1->
+δ('q1->', 'Z') = [('q1->', 'Z', '>')]
+Transicao Tomada: δ : (q1->, Z, >)
+
+Cadeia processada => ZUZ010BB
+Cabeca de Leitura =>    ^
+Estado Atual      => q1->
+δ('q1->', '0') = [('q1->', '0', '>')]
+Transicao Tomada: δ : (q1->, 0, >)
+
+Cadeia processada => ZUZ010BB
+Cabeca de Leitura =>     ^
+Estado Atual      => q1->
+δ('q1->', '1') = [('q1->', '1', '>'), ('q1<-', 'U', '<')]
+Transicao Tomada: δ : (q1<-, U, <)
+
+Cadeia processada => ZUZ0U0BB
+Cabeca de Leitura =>    ^
+Estado Atual      => q1<-
+δ('q1<-', '0') = [('q1<-', '0', '<')]
+Transicao Tomada: δ : (q1<-, 0, <)
+
+Cadeia processada => ZUZ0U0BB
+Cabeca de Leitura =>   ^
+Estado Atual      => q1<-
+δ('q1<-', 'Z') = [('q1<-', 'Z', '<')]
+Transicao Tomada: δ : (q1<-, Z, <)
+
+Cadeia processada => ZUZ0U0BB
+Cabeca de Leitura =>  ^
+Estado Atual      => q1<-
+δ('q1<-', 'U') = [('q1<-', 'U', '<')]
+Transicao Tomada: δ : (q1<-, U, <)
+
+Cadeia processada => ZUZ0U0BB
+Cabeca de Leitura => ^
+Estado Atual      => q1<-
+δ('q1<-', 'Z') = [('q1<-', 'Z', '<')]
+Transicao Tomada: δ : (q1<-, Z, <)
+
+Cadeia processada => ZUZ0U0BBB
+Cabeca de Leitura => 
+Estado Atual      => q1<-
+δ('q1<-', 'B') = [('qini', 'B', '>')]
+Transicao Tomada: δ : (qini, B, >)
+
+Cadeia processada => ZUZ0U0BBB
+Cabeca de Leitura => ^
+Estado Atual      => qini
+δ('qini', 'Z') = [('qini', 'Z', '>')]
+Transicao Tomada: δ : (qini, Z, >)
+
+Cadeia processada => ZUZ0U0BBB
+Cabeca de Leitura =>  ^
+Estado Atual      => qini
+δ('qini', 'U') = [('qini', 'U', '>')]
+Transicao Tomada: δ : (qini, U, >)
+
+Cadeia processada => ZUZ0U0BBB
+Cabeca de Leitura =>   ^
+Estado Atual      => qini
+δ('qini', 'Z') = [('qini', 'Z', '>')]
+Transicao Tomada: δ : (qini, Z, >)
+
+Cadeia processada => ZUZ0U0BBB
+Cabeca de Leitura =>    ^
+Estado Atual      => qini
+δ('qini', '0') = [('q0->', 'Z', '>')]
+Transicao Tomada: δ : (q0->, Z, >)
+
+Cadeia processada => ZUZZU0BBB
+Cabeca de Leitura =>     ^
+Estado Atual      => q0->
+δ('q0->', 'U') = [('q0->', 'U', '>')]
+Transicao Tomada: δ : (q0->, U, >)
+
+Cadeia processada => ZUZZU0BBB
+Cabeca de Leitura =>      ^
+Estado Atual      => q0->
+δ('q0->', '0') = [('q0->', '0', '>'), ('q0<-', 'Z', '<')]
+Transicao Tomada: δ : (q0<-, Z, <)
+
+Cadeia processada => ZUZZUZBBB
+Cabeca de Leitura =>     ^
+Estado Atual      => q0<-
+δ('q0<-', 'U') = [('q0<-', 'U', '<')]
+Transicao Tomada: δ : (q0<-, U, <)
+
+Cadeia processada => ZUZZUZBBB
+Cabeca de Leitura =>    ^
+Estado Atual      => q0<-
+δ('q0<-', 'Z') = [('q0<-', 'Z', '<')]
+Transicao Tomada: δ : (q0<-, Z, <)
+
+Cadeia processada => ZUZZUZBBB
+Cabeca de Leitura =>   ^
+Estado Atual      => q0<-
+δ('q0<-', 'Z') = [('q0<-', 'Z', '<')]
+Transicao Tomada: δ : (q0<-, Z, <)
+
+Cadeia processada => ZUZZUZBBB
+Cabeca de Leitura =>  ^
+Estado Atual      => q0<-
+δ('q0<-', 'U') = [('q0<-', 'U', '<')]
+Transicao Tomada: δ : (q0<-, U, <)
+
+Cadeia processada => ZUZZUZBBB
+Cabeca de Leitura => ^
+Estado Atual      => q0<-
+δ('q0<-', 'Z') = [('q0<-', 'Z', '<')]
+Transicao Tomada: δ : (q0<-, Z, <)
+
+Cadeia processada => ZUZZUZBBBB
+Cabeca de Leitura => 
+Estado Atual      => q0<-
+δ('q0<-', 'B') = [('qini', 'B', '>')]
+Transicao Tomada: δ : (qini, B, >)
+
+Cadeia processada => ZUZZUZBBBB
+Cabeca de Leitura => ^
+Estado Atual      => qini
+δ('qini', 'Z') = [('qini', 'Z', '>')]
+Transicao Tomada: δ : (qini, Z, >)
+
+Cadeia processada => ZUZZUZBBBB
+Cabeca de Leitura =>  ^
+Estado Atual      => qini
+δ('qini', 'U') = [('qini', 'U', '>')]
+Transicao Tomada: δ : (qini, U, >)
+
+Cadeia processada => ZUZZUZBBBB
+Cabeca de Leitura =>   ^
+Estado Atual      => qini
+δ('qini', 'Z') = [('qini', 'Z', '>')]
+Transicao Tomada: δ : (qini, Z, >)
+
+Cadeia processada => ZUZZUZBBBB
+Cabeca de Leitura =>    ^
+Estado Atual      => qini
+δ('qini', 'Z') = [('qini', 'Z', '>')]
+Transicao Tomada: δ : (qini, Z, >)
+
+Cadeia processada => ZUZZUZBBBB
+Cabeca de Leitura =>     ^
+Estado Atual      => qini
+δ('qini', 'U') = [('qini', 'U', '>')]
+Transicao Tomada: δ : (qini, U, >)
+
+Cadeia processada => ZUZZUZBBBB
+Cabeca de Leitura =>      ^
+Estado Atual      => qini
+δ('qini', 'Z') = [('qini', 'Z', '>')]
+Transicao Tomada: δ : (qini, Z, >)
+
+Cadeia processada => ZUZZUZBBBB
+Cabeca de Leitura =>       ^
+Estado Atual      => qini
+δ('qini', 'B') = [('qfim', 'B', '>')]
+Transicao Tomada: δ : (qfim, B, >)
+
+Cadeia processada => ZUZZUZBBBB
+Cabeca de Leitura =>        ^
+Estado Atual      => qfim
+Nao ha funcao de transicao definida para ('qfim', 'B')

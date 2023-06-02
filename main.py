@@ -22,60 +22,45 @@ def main():
             dicio_mt.update({nome:maquina})
             
     # Menu com usuario
-    while opt > 7 or opt < 1:
+    while opt > 5 or opt < 1:
         os.system(CLEAR)
         print("--------------OPCOES--------------")
         print("----------------------------------")
-        print("1. NMT do Hopcroft")
-        print("2. NMT da Marcia")
-        print("3. NMT Teste 1")
-        print("4. NMT Teste 2")
-        print("5. NMT Teste 3")
-        print("6. NMT Teste 4")
-        print("7. Sair do Programa")
+        print("1. NMT Teste 1")
+        print("2. NMT Teste 2")
+        print("3. NMT Teste 3")
+        print("4. NMT do Hopcroft")
+        print("5. Sair do Programa")
         opt = int(input("Escolha uma opção: "))
 
-    if opt == 7: return
+    if opt == 5: return
     else:
         cadeia = input("Digite a cadeia: ")
 
         if opt == 1:
+            if cadeia[-1] != dicio_mt['teste1'].simbolo_vazio : 
+                cadeia += dicio_mt['teste1'].simbolo_vazio
+
+            dicio_mt['teste1'].processaCadeia(cadeia)
+            main()
+        elif opt == 2:
+            if cadeia[-1] != dicio_mt['teste2'].simbolo_vazio : 
+                cadeia += dicio_mt['teste2'].simbolo_vazio
+
+            dicio_mt['teste2'].processaCadeia(cadeia)
+            main()
+        elif opt == 3:
+            if cadeia[-1] != dicio_mt['teste3'].simbolo_vazio : 
+                cadeia += dicio_mt['teste3'].simbolo_vazio
+
+            dicio_mt['teste3'].processaCadeia(cadeia)
+            main()
+        elif opt == 4:
             if cadeia[-1] != dicio_mt['hopcroft'].simbolo_vazio : 
                 cadeia += dicio_mt['hopcroft'].simbolo_vazio
 
             dicio_mt['hopcroft'].processaCadeia(cadeia)
             main()
-        elif opt == 2:
-            if cadeia[-1] != dicio_mt['marcia'].simbolo_vazio : 
-                cadeia += dicio_mt['marcia'].simbolo_vazio
-
-            dicio_mt['marcia'].processaCadeia(cadeia)
-            main()
-        elif opt == 3:
-            #if cadeia[-1] != dicio_mt['teste1'].simbolo_vazio : 
-            #    cadeia += dicio_mt['teste1'].simbolo_vazio
-
-            #dicio_mt['teste1'].processaCadeia(cadeia)
-            main()
-        elif opt == 4:
-            #if cadeia[-1] != dicio_mt['teste2'].simbolo_vazio : 
-            #    cadeia += dicio_mt['teste2'].simbolo_vazio
-
-            #dicio_mt['teste2'].processaCadeia(cadeia)
-            main()
-        elif opt == 5:
-            #if cadeia[-1] != dicio_mt['teste3'].simbolo_vazio : 
-            #    cadeia += dicio_mt['teste3'].simbolo_vazio
-
-            #dicio_mt['teste3'].processaCadeia(cadeia)
-            main()
-        elif opt == 6:
-            #if cadeia[-1] != dicio_mt['teste4'].simbolo_vazio : 
-            #    cadeia += dicio_mt['teste4'].simbolo_vazio
-
-            #dicio_mt['teste4'].processaCadeia(cadeia)
-            main()
-
 
 if __name__ == "__main__":
     main()

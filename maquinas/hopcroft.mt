@@ -10,4 +10,4 @@
 }
 q0
 {"qf"}
-Maquina reconhecedora da linguagem L
+Maquina reconhecedora da linguagem L = {01^k, k>1}

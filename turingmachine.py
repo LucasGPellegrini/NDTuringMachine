@@ -1,6 +1,7 @@
 import os
 import sys
 import copy
+#import random
 from time import sleep
 from DescricaoInstantanea import DescricaoInstantanea
 
@@ -87,6 +88,12 @@ class MaquinaTuring:
         if transicao in self.transicoes:
             # Se há mais de uma instrução para a transicao:
             if len(self.transicoes[transicao]) > 1:
+                # -------------------------------------------------
+                # Seleciona uma das transicoes aleatoriamente
+                # tran = random.choice(self.transicoes[transicao])
+                # outras_transicoes = [x for x in self.transicoes[transicao] if x!=tran]
+                # -------------------------------------------------
+
                 # Empilha os caminhos da árvore
                 for instrucao in self.transicoes[transicao][1:]:
                     # Guarda a Descricao instantanea
@@ -204,7 +211,7 @@ class MaquinaTuring:
         print(f"{'=-'*(len(self.descricao)//2)}\n")
         if len(self.cadeia_to_string()) < 20:
             self.brancos = (20-len(self.cadeia_to_string()))//2
-        print(f"Cadeia inicial  => {self.brancos*self.simbolo_vazio}{self.cadeia_to_string('ini')}{(self.brancos-vazios_cadeia)*self.simbolo_vazio}")
+        print(f"Cadeia inicial  => {self.brancos*self.simbolo_vazio}{self.cadeia_to_string('ini')}{(self.brancos-1)*self.simbolo_vazio}")
         print(f"Fita processada => {self.brancos*self.simbolo_vazio}{self.cadeia_to_string()}{(self.brancos-vazios_cadeia)*self.simbolo_vazio}")
 
     def cadeia_to_string(self, cadeia=""):
